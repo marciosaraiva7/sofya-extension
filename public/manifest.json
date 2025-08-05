@@ -8,6 +8,7 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
+  "permissions": ["microphone", "windows"],
   "action": {
     "default_title": "Clique para abrir",
     "default_popup": "index.html"
