@@ -1,4 +1,6 @@
-import { SofyaTranscriber } from "sofya.transcription";
+// Importa diretamente a implementação sem usar o bundle que contém "eval"
+// para evitar violações da Content Security Policy em extensões MV3.
+import { SofyaTranscriber } from "sofya.transcription/dist/services/transcription/SofyaTranscriber";
 
 // Declaração simples para evitar erros de tipos
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
