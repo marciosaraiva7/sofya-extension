@@ -1,24 +1,36 @@
-// Página de transcrição que captura áudio e envia o texto ao popup
+import { SofyaTranscriber } from "sofya.transcription";
+
 // Declaração simples para evitar erros de tipos
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const chrome: any;
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const SpeechRecognition: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
-if (SpeechRecognition) {
-  const recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
+const transcriber = new SofyaTranscriber({
+  apiKey: "kRx7FgVM11HdZqp63sNtY56UwCcXvlzrLm8bJeF",
+  config: {
+    language: "pt-BR",
+  },
+});
 
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  recognition.onresult = (event: any) => {
-    let transcript = '';
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      transcript += event.results[i][0].transcript;
-    }
-    // Envia a transcrição parcial para o popup
-    chrome.runtime.sendMessage({ type: 'transcription', text: transcript });
-  };
+transcriber.on("recognizing", (text: string) => {
+  chrome.runtime.sendMessage({ type: "transcription", text });
+});
 
-  recognition.start();
-}
+transcriber.on("recognized", (text: string) => {
+  chrome.runtime.sendMessage({ type: "transcription", text });
+});
+
+transcriber.on("error", (error: unknown) => {
+  console.error("Transcription error:", error);
+});
+
+transcriber.on("ready", () => {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((mediaStream) => {
+      transcriber.startTranscription(mediaStream);
+    })
+    .catch((error: unknown) => {
+      console.error("Error accessing microphone:", error);
+    });
+});
+
