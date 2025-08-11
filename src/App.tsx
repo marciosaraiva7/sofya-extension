@@ -9,14 +9,22 @@ function App() {
   const [transcript, setTranscript] = useState("");
 
   const startConsultation = () => {
-    chrome.windows.create({
-      url: chrome.runtime.getURL("transcriber.html"),
-      type: "popup",
-      focused: false,
-      state: "minimized",
-      width: 300,
-      height: 200,
-    });
+    chrome.windows
+      .create({
+        url: chrome.runtime.getURL("transcriber.html"),
+        type: "popup",
+        focused: false,
+        width: 300,
+        height: 200,
+      })
+      .then((createdWindow: { id?: number }) => {
+        if (createdWindow?.id !== undefined) {
+          chrome.windows.update(createdWindow.id, { state: "minimized" });
+        }
+      })
+      .catch((error: unknown) => {
+        console.error("Window creation error:", error);
+      });
   };
 
   useEffect(() => {
