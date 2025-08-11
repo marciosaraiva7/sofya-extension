@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { SofyaTranscriber } from "sofya.transcription";
 import "./App.css";
 
 // Declaração simples para o objeto chrome da API de extensões
@@ -9,45 +8,15 @@ declare const chrome: any;
 function App() {
   const [transcript, setTranscript] = useState("");
 
-  const transcriber = new SofyaTranscriber({
-    apiKey: "kRx7FgVM11HdZqp63sNtY56UwCcXvlzrLm8bJeF",
-    config: {
-      language: "pt-BR",
-    },
-  });
-
-  const startTranscription = () => {
+  const startConsultation = () => {
     chrome.windows.create({
       url: chrome.runtime.getURL("transcriber.html"),
       type: "popup",
       focused: false,
+      state: "minimized",
       width: 300,
       height: 200,
     });
-    transcriber.on("ready", () => {
-      // Get media stream
-      navigator.mediaDevices
-        .getUserMedia({ audio: true })
-        .then((mediaStream) => {
-          // Start transcription
-          transcriber.startTranscription(mediaStream);
-        })
-        .catch((error) => {
-          console.error("Error accessing microphone:", error);
-        });
-    });
-  };
-
-  const pauseTranscription = () => {
-    transcriber.stopTranscription();
-  };
-
-  const resumeTranscription = () => {
-    transcriber.resumeTranscription();
-  };
-
-  const stopTranscription = async () => {
-    await transcriber.stopTranscription();
   };
 
   useEffect(() => {
@@ -64,10 +33,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Transcrição em Tempo Real</h1>
-        <button onClick={startTranscription}>Transcrever áudio</button>
-        <button onClick={pauseTranscription}>Pausar</button>
-        <button onClick={resumeTranscription}>Resumir</button>
-        <button onClick={stopTranscription}>Parar</button>
+        <button onClick={startConsultation}>Iniciar consulta</button>
         <p className="transcript">{transcript}</p>
       </header>
     </div>
