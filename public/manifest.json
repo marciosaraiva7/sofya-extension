@@ -10,7 +10,7 @@
   },
   "permissions": ["windows"],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; base-uri 'self'; connect-src 'self' https://api.sua-api.com;"
+    "extension_pages": "script-src 'self'; object-src 'self'; base-uri 'self'; connect-src 'self','unsafe-eval';"
   },
   "action": {
     "default_title": "Clique para abrir",
