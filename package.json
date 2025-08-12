@@ -13,6 +13,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "sofya.transcription": "^0.0.16",
+    "sofya.transcription.extension.chrome": "^0.0.1",
     "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
