@@ -1,38 +1,17 @@
-// Importa diretamente a implementação sem usar o bundle que contém "eval"
-// para evitar violações da Content Security Policy em extensões MV3.
-import { SofyaTranscriber } from "sofya.transcription/dist/services/transcription/SofyaTranscriber";
+import { ChromeExtensionTranscriber } from "sofya.transcription.extension.chrome";
 
-// Declaração simples para evitar erros de tipos
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const chrome: any;
 
-const transcriber = new SofyaTranscriber({
+const transcriber = new ChromeExtensionTranscriber({
   apiKey: "kRx7FgVM11HdZqp63sNtY56UwCcXvlzrLm8bJeF",
-  config: {
-    language: "pt-BR",
+  language: "pt-BR",
+  onTranscription: (text: string) => {
+    chrome.runtime.sendMessage({ type: "transcription", text });
+  },
+  onError: (error: unknown) => {
+    console.error("Transcription error:", error);
   },
 });
 
-transcriber.on("recognizing", (text: string) => {
-  chrome.runtime.sendMessage({ type: "transcription", text });
-});
-
-transcriber.on("recognized", (text: string) => {
-  chrome.runtime.sendMessage({ type: "transcription", text });
-});
-
-transcriber.on("error", (error: unknown) => {
-  console.error("Transcription error:", error);
-});
-
-transcriber.on("ready", () => {
-  navigator.mediaDevices
-    .getUserMedia({ audio: true })
-    .then((mediaStream) => {
-      transcriber.startTranscription(mediaStream);
-    })
-    .catch((error: unknown) => {
-      console.error("Error accessing microphone:", error);
-    });
-});
-
+transcriber.start();
