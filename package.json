@@ -12,7 +12,8 @@
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "sofya.transcription": "^0.0.16"
+    "sofya.transcription": "^0.0.16",
+    "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
