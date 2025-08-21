@@ -1,0 +1,1 @@
+- After all modifications generate a simple commit message (should be 1 phrase long), update the package.json version follwing semVer conventions and update the CHANGELOG(following the current structure) with descriptive informations about the commiting changes

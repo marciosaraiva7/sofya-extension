@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__figma-mcp__get_figma_data",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
